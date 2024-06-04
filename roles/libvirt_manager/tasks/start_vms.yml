@@ -51,7 +51,7 @@
       }}
     extracted_ip: >-
       {{
-        _libvirt_manager_networking.instances[vm].networks[cifmw_libvirt_manager_pub_net]['ip_v4']
+        _libvirt_manager_networking.instances[vm].networks[cifmw_libvirt_manager_pub_net]['ip_v6']
       }}
   ansible.builtin.wait_for:
     host: "{{ extracted_ip }}"

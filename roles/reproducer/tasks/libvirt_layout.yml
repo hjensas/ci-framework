@@ -128,12 +128,16 @@
       (compute.key in (groups['networkers'] | default([])))
   vars:
     _host: "{{ compute.key }}"
-    _dns4: "{{ cifmw_networking_env_definition.networks.ctlplane.dns_v4[0] }}"
+    _dns4: "{{ cifmw_networking_env_definition.networks.ctlplane.dns_v4[0] | default('') }}"
+    _dns6: "{{ cifmw_networking_env_definition.networks.ctlplane.dns_v6[0] | default('') }}"
     _iface: "{{ compute.value.networks.ctlplane.interface_name }}"
-    _ip4: "{{ compute.value.networks.ctlplane.ip_v4 }}"
-    _gw4: "{{ cifmw_networking_env_definition.networks.ctlplane.gw_v4 }}"
-    _controller_ip4: "{{ cifmw_networking_env_definition.instances['controller-0'].networks.ctlplane.ip_v4 }}"
-    _prefix: "{{cifmw_networking_env_definition.networks.ctlplane.network_v4 | ansible.utils.ipaddr('prefix') }}"
+    _ip4: "{{ compute.value.networks.ctlplane.ip_v4 | default('') }}"
+    _ip6: "{{ compute.value.networks.ctlplane.ip_v6 | default('') }}"
+    _gw4: "{{ cifmw_networking_env_definition.networks.ctlplane.gw_v4 | default('') }}"
+    _gw6: "{{ cifmw_networking_env_definition.networks.ctlplane.gw_v6 | default('') }}"
+    _controller_ip4: "{{ cifmw_networking_env_definition.instances['controller-0'].networks.ctlplane.ip_v4 | default('') }}"
+    _controller_ip6: "{{ cifmw_networking_env_definition.instances['controller-0'].networks.ctlplane.ip_v6 | default('') }}"
+    _prefix: "{{cifmw_networking_env_definition.networks.ctlplane.network_v6 | ansible.utils.ipaddr('prefix') }}"
   ansible.builtin.include_tasks: configure_computes.yml
   loop: >-
     {{ cifmw_networking_env_definition.instances | dict2items }}

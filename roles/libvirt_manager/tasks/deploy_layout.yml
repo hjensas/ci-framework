@@ -261,7 +261,7 @@
     _init_admin_user: "{{ vm_data.value.admin_user | default('root') }}"
     extracted_ip: >-
       {{
-        _libvirt_manager_networking.instances[vm].networks[cifmw_libvirt_manager_pub_net]['ip_v4']
+        _libvirt_manager_networking.instances[vm].networks[cifmw_libvirt_manager_pub_net]['ip_v6']
       }}
     pub_key: "{{ pub_ssh_key.content | b64decode }}"
     priv_key: "{{ priv_ssh_key.content | b64decode }}"

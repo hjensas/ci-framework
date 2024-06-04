@@ -5,7 +5,11 @@
     - name: Ensure we can ping controller-0 from ctlplane
       ansible.builtin.command:
         cmd: |
-          ping -c2 {{ _controller_ip4 }}
+          ping -c2 {{ _controller_ip6 }}
+      retries: 12
+      delay: 5
+      register: _result
+      until: _result.rc == 0
 
     - name: Tweak dnf configuration
       become: true
