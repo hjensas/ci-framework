@@ -21,6 +21,17 @@
     state: latest  # noqa: package-latest
     use: "{{ hostvars[cifmw_ci_nmstate_unmanaged_host]['ansible_facts']['pkg_mgr'] }}"
 
+# TODO(hjensas): I don't think the cifmw_ci_nmstate_instance_config "direct pass trough"
+#                works as intended. By-passing by calling this task file directly,
+#                thus ensuing the directories exist here.
+- name: Create role needed directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ cifmw_ci_nmstate_configs_dir }}"
+    - "{{ cifmw_ci_nmstate_manifests_dir }}"
+
 - name: "Save nmstate state for {{ cifmw_ci_nmstate_unmanaged_host }}"
   ansible.builtin.copy:
     dest: "{{ cifmw_ci_nmstate_configs_dir }}/{{ cifmw_ci_nmstate_unmanaged_host }}-state.yaml"
