@@ -1,0 +1,25 @@
+---
+# source: bmo/nodeset-values/values.yaml.j2
+data:
+  bootstrap_command: |
+    # root CA
+    cd /etc/pki/ca-trust/source/anchors/
+    curl -LOk {{ cifmw_install_ca_url }}
+    update-ca-trust
+
+    # install rhos-release repos
+    dnf --nogpgcheck install -y {{ cifmw_repo_setup_rhos_release_rpm }}
+    rhos-release {{ cifmw_repo_setup_rhos_release_args }}
+
+{% for repo in cifmw_reproducer_compute_repos %}
+    echo "[{{ repo.name }}]" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    echo "name={{ repo.name }}" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    echo "baseurl={{ repo.baseurl }}" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    echo "gpgcheck={% if repo.gpgcheck %}1{% else %}0{% endif %}" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    echo "enabled={% if repo.enabled %}1{% else %}0{% endif %}" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    echo "priority=1" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    {% if repo.includepkgs is defined -%}
+    echo "includepkgs={{ repo.includepkgs }}" >> "/etc/yum.repos.d/{{ repo.name }}.repo"
+    {% endif %}
+
+{% endfor %}

@@ -374,7 +374,7 @@
             rejectattr('key', 'equalto', 'cifmw_openshift_token') |
             rejectattr('key', 'equalto', 'cifmw_networking_env_definition') |
             rejectattr('key', 'match', '^cifmw_use_(?!lvms).*') |
-            rejectattr('key', 'match', '^cifmw_reproducer.*') |
+            rejectattr('key', 'match', '^cifmw_reproducer(?!_compute_repos).*') |
             rejectattr('key', 'match', '^cifmw_rhol.*') |
             rejectattr('key', 'match', '^cifmw_discover.*') |
             rejectattr('key', 'match', '^cifmw_libvirt_manager.*') |
