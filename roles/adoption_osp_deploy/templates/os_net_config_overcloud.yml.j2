@@ -40,3 +40,15 @@ network_config:
     routes: []
     {% endif %}
   {% endfor %}
+{% if 'ironic' in _node_net.networks.keys () %}
+{% set net = _node_net.networks.ironic %}
+# ironic
+- name: {{ _stack.os_net_config_ironic_iface |
+           default('nic3') }}
+  type: interface
+  mtu: {{ net.mtu }}
+  addresses:
+  - ip_netmask: {{ net.ip_v4 }}/{{ net.prefix_length_v4 }}
+  use_dhcp: false
+  routes: []
+{% endif %}
